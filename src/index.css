@@ -1,0 +1,43 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+@theme {
+  /* LOTC Brand Colors */
+  --color-brand-red: #c22035;
+  --color-brand-red-light: #d94a5c;
+  --color-brand-red-dark: #9e1a2c;
+  --color-brand-blue: #86b2d3;
+  --color-brand-blue-light: #a8c8e0;
+  --color-brand-blue-dark: #6a96b8;
+  --color-brand-black: #060511;
+  --color-brand-grey: #a7a8a3;
+
+  /* Functional status colors (kept for UX clarity) */
+  --color-emerald: #10b981;
+  --color-emerald-light: #34d399;
+  --color-amber: #f59e0b;
+  --color-amber-light: #fbbf24;
+  --color-rose: #ef4444;
+  --color-rose-light: #f87171;
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #a7a8a3;
+  border-radius: 3px;
+}
+.recharts-default-tooltip {
+  border-radius: 8px !important;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important;
+}
