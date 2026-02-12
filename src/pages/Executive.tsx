@@ -7,7 +7,7 @@ import { DollarSign, CreditCard, PiggyBank, Activity } from 'lucide-react';
 import { useFinancial } from '../context/FinancialContext';
 import KPICard from '../components/KPICard';
 import ChartCard from '../components/ChartCard';
-import { formatCurrency, tooltipFmt, prorateBudget } from '../utils/formatters';
+import { formatCurrency, tooltipFmt } from '../utils/formatters';
 import { COLORS, CHART_COLORS } from '../utils/colors';
 import {
   getTotalRevenue, getTotalExpenses, getNetSurplus, getBudgetHealth,
@@ -51,35 +51,6 @@ export default function Executive() {
       { name: 'Surplus', 'FY 2025': rev2025.actual - exp2025.actual, 'FY 2026 YTD': rev2026.actual - exp2026.actual },
     ];
   }, [monthly, projection]);
-
-  // Insights
-  const insights = useMemo(() => {
-    const ms = yearFilter === 2026 ? mothership2026 : mothership2025;
-    const goingWell: string[] = [];
-    const watchList: string[] = [];
-    const actionNeeded: string[] = [];
-
-    for (const dept of ms.departments.filter(d => d.name !== 'Administrative')) {
-      const revItems = dept.lineItems.filter(li => li.section === 'revenue' && !li.isTotal);
-      const expItems = dept.lineItems.filter(li => li.section === 'expense' && !li.isTotal);
-      const totalRev = revItems.reduce((s, li) => s + li.actual, 0);
-      const totalRevBudget = revItems.reduce((s, li) => s + prorateBudget(li.budget, budgetMonths), 0);
-      const totalExp = expItems.reduce((s, li) => s + li.actual, 0);
-      const totalExpBudget = expItems.reduce((s, li) => s + prorateBudget(li.budget, budgetMonths), 0);
-
-      if (totalRevBudget > 0 && totalRev > totalRevBudget * 1.1) {
-        goingWell.push(`${dept.name}: Revenue at ${Math.round((totalRev / totalRevBudget) * 100)}% of YTD goal`);
-      }
-      if (totalExpBudget > 0 && totalExp > totalExpBudget * 0.9) {
-        watchList.push(`${dept.name}: Spending at ${Math.round((totalExp / totalExpBudget) * 100)}% of YTD budget`);
-      }
-      if (totalRevBudget > 0 && totalRev < totalRevBudget * 0.5 && totalRevBudget > 1000) {
-        actionNeeded.push(`${dept.name}: Only ${Math.round((totalRev / totalRevBudget) * 100)}% of YTD revenue goal`);
-      }
-    }
-
-    return { goingWell: goingWell.slice(0, 3), watchList: watchList.slice(0, 3), actionNeeded: actionNeeded.slice(0, 3) };
-  }, [yearFilter, mothership2025, mothership2026, budgetMonths]);
 
   // Program spending for horizontal bar
   const programSpending = useMemo(() => {
@@ -161,57 +132,6 @@ export default function Executive() {
           </BarChart>
         </ResponsiveContainer>
       </ChartCard>
-
-      {/* Insights */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-emerald-50 rounded-xl border border-emerald-200 p-4">
-          <h3 className="font-semibold text-emerald-800 text-sm mb-2 uppercase tracking-wide">What's Going Well</h3>
-          {insights.goingWell.length > 0 ? (
-            <ul className="space-y-1.5">
-              {insights.goingWell.map((item, i) => (
-                <li key={i} className="text-sm text-emerald-700 flex items-start gap-1.5">
-                  <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-sm text-emerald-600 italic">No standout performers yet</p>
-          )}
-        </div>
-
-        <div className="bg-amber-50 rounded-xl border border-amber-200 p-4">
-          <h3 className="font-semibold text-amber-800 text-sm mb-2 uppercase tracking-wide">Watch List</h3>
-          {insights.watchList.length > 0 ? (
-            <ul className="space-y-1.5">
-              {insights.watchList.map((item, i) => (
-                <li key={i} className="text-sm text-amber-700 flex items-start gap-1.5">
-                  <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-sm text-amber-600 italic">Nothing flagged</p>
-          )}
-        </div>
-
-        <div className="bg-rose-50 rounded-xl border border-rose-200 p-4">
-          <h3 className="font-semibold text-rose-800 text-sm mb-2 uppercase tracking-wide">Action Needed</h3>
-          {insights.actionNeeded.length > 0 ? (
-            <ul className="space-y-1.5">
-              {insights.actionNeeded.map((item, i) => (
-                <li key={i} className="text-sm text-rose-700 flex items-start gap-1.5">
-                  <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-rose-500 flex-shrink-0" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-sm text-rose-600 italic">No urgent items</p>
-          )}
-        </div>
-      </div>
 
       {/* Bottom Row Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
