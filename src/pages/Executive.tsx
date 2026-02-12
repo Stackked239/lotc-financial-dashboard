@@ -59,7 +59,7 @@ export default function Executive() {
     const watchList: string[] = [];
     const actionNeeded: string[] = [];
 
-    for (const dept of ms.departments) {
+    for (const dept of ms.departments.filter(d => d.name !== 'Administrative')) {
       const revItems = dept.lineItems.filter(li => li.section === 'revenue' && !li.isTotal);
       const expItems = dept.lineItems.filter(li => li.section === 'expense' && !li.isTotal);
       const totalRev = revItems.reduce((s, li) => s + li.actual, 0);
