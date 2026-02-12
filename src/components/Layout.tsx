@@ -2,7 +2,7 @@ import { ReactNode, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard, DollarSign, CreditCard, Users, BarChart3,
-  TrendingUp, Menu, X
+  TrendingUp, Menu, X, Heart
 } from 'lucide-react';
 import { useFinancial } from '../context/FinancialContext';
 import YearFilter from './YearFilter';
@@ -14,6 +14,7 @@ const navItems = [
   { to: '/programs', label: 'Programs', icon: Users },
   { to: '/budget', label: 'Budget Analysis', icon: BarChart3 },
   { to: '/trends', label: 'Trends', icon: TrendingUp },
+  { to: '/donations-social', label: 'Donations & Social', icon: Heart },
 ];
 
 export default function Layout({ children }: { children: ReactNode }) {

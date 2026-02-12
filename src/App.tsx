@@ -7,6 +7,7 @@ import Expenses from './pages/Expenses';
 import Programs from './pages/Programs';
 import BudgetAnalysis from './pages/BudgetAnalysis';
 import Trends from './pages/Trends';
+import DonationsSocial from './pages/DonationsSocial';
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
             <Route path="/programs" element={<Programs />} />
             <Route path="/budget" element={<BudgetAnalysis />} />
             <Route path="/trends" element={<Trends />} />
+            <Route path="/donations-social" element={<DonationsSocial />} />
           </Routes>
         </Layout>
       </FinancialProvider>
